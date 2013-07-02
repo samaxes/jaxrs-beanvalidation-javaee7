@@ -77,6 +77,7 @@ public class PersonsIT {
                 .build();
         Response response = client.target(baseURL + "r/persons")
                 .request(MediaType.APPLICATION_JSON)
+                .header("Accept-Language", "pt")
                 .get();
         response.bufferEntity();
 
@@ -94,6 +95,7 @@ public class PersonsIT {
         Response response = client.target(baseURL + "r/persons/{id}")
                 .resolveTemplate("id", "ok")
                 .request(MediaType.APPLICATION_JSON)
+                .header("Accept-Language", "pt")
                 .get();
         response.bufferEntity();
 
@@ -111,6 +113,7 @@ public class PersonsIT {
         Response response = client.target(baseURL + "r/persons/{id}")
                 .resolveTemplate("id", "10")
                 .request(MediaType.APPLICATION_JSON)
+                .header("Accept-Language", "pt")
                 .get();
         response.bufferEntity();
 
@@ -129,6 +132,7 @@ public class PersonsIT {
                 .build();
         Response response = client.target(baseURL + "r/persons/create")
                 .request(MediaType.APPLICATION_JSON)
+                .header("Accept-Language", "pt")
                 .post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
         response.bufferEntity();
 
@@ -152,6 +156,7 @@ public class PersonsIT {
                 .build();
         Response response = client.target(baseURL + "r/persons/create")
                 .request(MediaType.APPLICATION_JSON)
+                .header("Accept-Language", "pt")
                 .post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
         response.bufferEntity();
 
@@ -166,12 +171,5 @@ public class PersonsIT {
             builder.append("Entity: " + response.readEntity(type) + "\n");
         }
         LOGGER.info(builder.toString());
-
-        /*if (HttpServletResponse.SC_OK == response.getStatus() || HttpServletResponse.SC_CREATED == response.getStatus()) {
-            LOGGER.info("[" + method + "] response: \n" + response.readEntity(type));
-        } else {
-            LOGGER.info("[" + method + "] response: {status=" + response.getStatusInfo().getStatusCode() + ", reason="
-                    + response.getStatusInfo().getReasonPhrase() + "}");
-        }*/
     }
 }

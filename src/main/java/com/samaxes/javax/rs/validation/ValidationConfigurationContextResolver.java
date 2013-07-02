@@ -20,14 +20,15 @@ package com.samaxes.javax.rs.validation;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
 import javax.validation.ParameterNameProvider;
 import javax.validation.Validation;
-import javax.ws.rs.container.ResourceContext;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
@@ -48,7 +49,10 @@ public class ValidationConfigurationContextResolver implements ContextResolver<V
     private static final Logger LOGGER = Logger.getLogger(ValidationConfigurationContextResolver.class.getName());
 
     @Context
-    private ResourceContext resourceContext;
+    private HttpHeaders headers;
+
+    @Context
+    private ParameterNameProvider parameterNameProvider;
 
     /**
      * Get a context of type {@code ValidationConfiguration} that is applicable to the supplied type.
@@ -59,18 +63,21 @@ public class ValidationConfigurationContextResolver implements ContextResolver<V
      */
     @Override
     public ValidationConfig getContext(Class<?> type) {
-        LOGGER.info("###########################################################################");
+        LOGGER.info("*** Overriding default validation configurations ***");
+        LOGGER.info("Default Locale: " + Locale.getDefault());
+        LOGGER.info("Selected Locale: " + headers.getAcceptableLanguages().get(0));
         final ValidationConfig config = new ValidationConfig();
 
         config.setMessageInterpolator(new LocaleSpecificMessageInterpolator(Validation.byDefaultProvider().configure()
-                .getDefaultMessageInterpolator(), new Locale("pt")));
+                .getDefaultMessageInterpolator(), headers.getAcceptableLanguages().get(0)));
         config.setParameterNameProvider(new CustomParameterNameProvider());
 
         return config;
     }
 
     /**
-     * TODO javadoc...
+     * If method input parameters are invalid, this class returns actual parameter names instead of the default ones (
+     * {@code arg0, arg1, ...})
      */
     private class CustomParameterNameProvider implements ParameterNameProvider {
 
@@ -87,6 +94,12 @@ public class ValidationConfigurationContextResolver implements ContextResolver<V
 
         @Override
         public List<String> getParameterNames(final Method method) {
+            if ("getPerson".equals(method.getName())) {
+                return Arrays.asList("id");
+            }
+            if ("createPerson".equals(method.getName())) {
+                return Arrays.asList("id", "name");
+            }
             return nameProvider.getParameterNames(method);
         }
     }

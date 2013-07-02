@@ -32,8 +32,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -52,6 +50,7 @@ public class Persons {
     @Path("{id}")
     public Person getPerson(
             @PathParam("id")
+            @NotNull(message = "The id must not be null")
             @Pattern(regexp = "[0-9]+", message = "The id must be a valid number")
             String id) {
         return persons.get(id);
@@ -61,7 +60,6 @@ public class Persons {
     @Path("create")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response createPerson(
-            @Context HttpHeaders headers,
             @FormParam("id")
             @NotNull(message = "{person.id.notnull}")
             @Pattern(regexp = "[0-9]+", message = "{person.id.pattern}")
