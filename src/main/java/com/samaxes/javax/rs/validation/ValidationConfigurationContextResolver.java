@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.validation.ParameterNameProvider;
@@ -35,7 +36,7 @@ import javax.ws.rs.ext.Provider;
 import org.glassfish.jersey.server.validation.ValidationConfig;
 
 /**
- * Custom configuration of validation. This configuration defines custom:
+ * Custom configuration of validation. This configuration can define custom:
  * <ul>
  * <li>MessageInterpolator - interpolates a given constraint violation message.</li>
  * <li>TraversableResolver - determines if a property can be accessed by the Bean Validation provider.</li>
@@ -51,9 +52,6 @@ public class ValidationConfigurationContextResolver implements ContextResolver<V
     @Context
     private HttpHeaders headers;
 
-    @Context
-    private ParameterNameProvider parameterNameProvider;
-
     /**
      * Get a context of type {@code ValidationConfiguration} that is applicable to the supplied type.
      *
@@ -63,9 +61,9 @@ public class ValidationConfigurationContextResolver implements ContextResolver<V
      */
     @Override
     public ValidationConfig getContext(Class<?> type) {
-        LOGGER.info("*** Overriding default validation configurations ***");
-        LOGGER.info("Default Locale: " + Locale.getDefault());
-        LOGGER.info("Selected Locale: " + headers.getAcceptableLanguages().get(0));
+        LOGGER.log(Level.INFO, "*** Overriding default validation configurations ***");
+        LOGGER.log(Level.INFO, "Default Locale: " + Locale.getDefault());
+        LOGGER.log(Level.INFO, "Selected Locale: " + headers.getAcceptableLanguages().get(0));
         final ValidationConfig config = new ValidationConfig();
 
         config.setMessageInterpolator(new LocaleSpecificMessageInterpolator(Validation.byDefaultProvider().configure()

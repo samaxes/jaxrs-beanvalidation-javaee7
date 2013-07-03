@@ -19,14 +19,8 @@
 package com.samaxes.javax.rs.validation;
 
 import javax.ws.rs.ApplicationPath;
-
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.ServerProperties;
+import javax.ws.rs.core.Application;
 
 @ApplicationPath("r")
-public class ApplicationConfig extends ResourceConfig {
-    
-    public ApplicationConfig() {
-        property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
-    }
+public class ApplicationConfig extends Application {
 }

@@ -93,7 +93,7 @@ public class PersonsIT {
                 .property(JsonGenerator.PRETTY_PRINTING, true)
                 .build();
         Response response = client.target(baseURL + "r/persons/{id}")
-                .resolveTemplate("id", "ok")
+                .resolveTemplate("id", "test")
                 .request(MediaType.APPLICATION_JSON)
                 .header("Accept-Language", "pt")
                 .get();
