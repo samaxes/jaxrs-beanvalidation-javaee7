@@ -22,14 +22,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.validation.ParameterNameProvider;
 import javax.validation.Validation;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
@@ -47,11 +42,6 @@ import org.glassfish.jersey.server.validation.ValidationConfig;
 @Provider
 public class ValidationConfigurationContextResolver implements ContextResolver<ValidationConfig> {
 
-    private static final Logger LOGGER = Logger.getLogger(ValidationConfigurationContextResolver.class.getName());
-
-    @Context
-    private HttpHeaders headers;
-
     /**
      * Get a context of type {@code ValidationConfiguration} that is applicable to the supplied type.
      *
@@ -61,13 +51,10 @@ public class ValidationConfigurationContextResolver implements ContextResolver<V
      */
     @Override
     public ValidationConfig getContext(Class<?> type) {
-        LOGGER.log(Level.INFO, "*** Overriding default validation configurations ***");
-        LOGGER.log(Level.INFO, "Default Locale: " + Locale.getDefault());
-        LOGGER.log(Level.INFO, "Selected Locale: " + headers.getAcceptableLanguages().get(0));
         final ValidationConfig config = new ValidationConfig();
 
         config.setMessageInterpolator(new LocaleSpecificMessageInterpolator(Validation.byDefaultProvider().configure()
-                .getDefaultMessageInterpolator(), headers.getAcceptableLanguages().get(0)));
+                .getDefaultMessageInterpolator()));
         config.setParameterNameProvider(new CustomParameterNameProvider());
 
         return config;

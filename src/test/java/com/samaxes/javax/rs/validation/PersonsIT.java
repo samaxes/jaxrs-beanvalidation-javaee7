@@ -77,7 +77,6 @@ public class PersonsIT {
                 .build();
         Response response = client.target(baseURL + "r/persons")
                 .request(MediaType.APPLICATION_JSON)
-                .header("Accept-Language", "pt")
                 .get();
         response.bufferEntity();
 
@@ -95,7 +94,7 @@ public class PersonsIT {
         Response response = client.target(baseURL + "r/persons/{id}")
                 .resolveTemplate("id", "test")
                 .request(MediaType.APPLICATION_JSON)
-                .header("Accept-Language", "pt")
+                .header("Accept-Language", "en")
                 .get();
         response.bufferEntity();
 
@@ -113,7 +112,6 @@ public class PersonsIT {
         Response response = client.target(baseURL + "r/persons/{id}")
                 .resolveTemplate("id", "10")
                 .request(MediaType.APPLICATION_JSON)
-                .header("Accept-Language", "pt")
                 .get();
         response.bufferEntity();
 
@@ -156,7 +154,6 @@ public class PersonsIT {
                 .build();
         Response response = client.target(baseURL + "r/persons/create")
                 .request(MediaType.APPLICATION_JSON)
-                .header("Accept-Language", "pt")
                 .post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
         response.bufferEntity();
 
@@ -165,7 +162,7 @@ public class PersonsIT {
     }
 
     private void logResponse(String method, Response response, Class<? extends JsonValue> type) {
-        StringBuilder builder = new StringBuilder("\n\n" + method + "\n");
+        StringBuilder builder = new StringBuilder("\n" + method + "\n");
         builder.append("Response: " + response + "\n");
         if (MediaType.APPLICATION_JSON_TYPE.equals(response.getMediaType())) {
             builder.append("Entity: " + response.readEntity(type) + "\n");

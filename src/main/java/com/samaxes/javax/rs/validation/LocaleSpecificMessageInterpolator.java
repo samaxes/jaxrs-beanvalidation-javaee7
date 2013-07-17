@@ -19,6 +19,8 @@
 package com.samaxes.javax.rs.validation;
 
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.validation.MessageInterpolator;
 
@@ -27,13 +29,12 @@ import javax.validation.MessageInterpolator;
  */
 public class LocaleSpecificMessageInterpolator implements MessageInterpolator {
 
+    private static final Logger LOGGER = Logger.getLogger(LocaleSpecificMessageInterpolator.class.getName());
+
     private final MessageInterpolator defaultInterpolator;
 
-    private final Locale defaultLocale;
-
-    public LocaleSpecificMessageInterpolator(MessageInterpolator interpolator, Locale locale) {
+    public LocaleSpecificMessageInterpolator(MessageInterpolator interpolator) {
         this.defaultInterpolator = interpolator;
-        this.defaultLocale = locale;
     }
 
     /**
@@ -41,10 +42,15 @@ public class LocaleSpecificMessageInterpolator implements MessageInterpolator {
      */
     @Override
     public String interpolate(String message, Context context) {
-        return defaultInterpolator.interpolate(message, context, this.defaultLocale);
+        LOGGER.log(Level.CONFIG, "Selecting the language " + LocaleThreadLocal.get() + " for the error message.");
+        return defaultInterpolator.interpolate(message, context, LocaleThreadLocal.get());
     }
 
-    // no real use, implemented for completeness
+    /*
+     * (non-Javadoc)
+     * @see javax.validation.MessageInterpolator#interpolate(java.lang.String,
+     * javax.validation.MessageInterpolator.Context, java.util.Locale)
+     */
     @Override
     public String interpolate(String message, Context context, Locale locale) {
         return defaultInterpolator.interpolate(message, context, locale);

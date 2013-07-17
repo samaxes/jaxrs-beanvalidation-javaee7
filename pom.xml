@@ -9,7 +9,7 @@
     <packaging>war</packaging>
 
     <name>Integrating Bean Validation with JAX-RS in Java EE 7</name>
-    <description>Integrate Bean Validation with JAX-RS and internationalize error messages without any proprietary implementation</description>
+    <description>Integrate Bean Validation with JAX-RS and internationalize error messages with Java EE 7</description>
     <url>https://github.com/samaxes/jaxrs-beanvalidation-javaee7</url>
     <inceptionYear>2013</inceptionYear>
     <organization>
