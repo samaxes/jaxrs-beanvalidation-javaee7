@@ -39,6 +39,7 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.jsonp.JsonProcessingFeature;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -56,7 +57,7 @@ public class PersonsIT {
 
     private static final Logger LOGGER = Logger.getLogger(PersonsIT.class.getName());
 
-    @Deployment(testable = false)
+    @Deployment
     public static WebArchive createDeployment() throws IOException {
         final WebArchive war = ShrinkWrap.create(WebArchive.class, "jaxrs-beanvalidation-javaee7.war")
                 .addPackage("com.samaxes.javax.rs.validation")
@@ -68,9 +69,9 @@ public class PersonsIT {
     }
 
     @Test
+    @RunAsClient
     @InSequence(10)
     public void shouldReturnAllPersons(@ArquillianResource URL baseURL) {
-        // Client client = ClientBuilder.newClient();
         Client client = ClientBuilder.newBuilder()
                 .register(JsonProcessingFeature.class)
                 .property(JsonGenerator.PRETTY_PRINTING, true)
@@ -85,6 +86,7 @@ public class PersonsIT {
     }
 
     @Test
+    @RunAsClient
     @InSequence(20)
     public void shouldReturnAValidationErrorWhenGettingAPerson(@ArquillianResource URL baseURL) {
         Client client = ClientBuilder.newBuilder()
@@ -103,6 +105,7 @@ public class PersonsIT {
     }
 
     @Test
+    @RunAsClient
     @InSequence(30)
     public void shouldReturnAnEmptyPerson(@ArquillianResource URL baseURL) {
         Client client = ClientBuilder.newBuilder()
@@ -120,6 +123,7 @@ public class PersonsIT {
     }
 
     @Test
+    @RunAsClient
     @InSequence(40)
     public void shouldReturnAValidationErrorWhenCreatingAPerson(@ArquillianResource URL baseURL) {
         Form form = new Form();
@@ -139,6 +143,7 @@ public class PersonsIT {
     }
 
     @Test
+    @RunAsClient
     @InSequence(50)
     public void shouldReturnACreatedPerson(@ArquillianResource URL baseURL) {
         Person person = new Person();
@@ -162,11 +167,13 @@ public class PersonsIT {
     }
 
     private void logResponse(String method, Response response, Class<? extends JsonValue> type) {
-        StringBuilder builder = new StringBuilder("\n" + method + "\n");
-        builder.append("Response: " + response + "\n");
+        StringBuilder builder = new StringBuilder(method).append("\n");
+        builder.append("Response: ").append(response).append("\n");
+        builder.append("Entity: ");
         if (MediaType.APPLICATION_JSON_TYPE.equals(response.getMediaType())) {
-            builder.append("Entity: " + response.readEntity(type) + "\n");
+            builder.append(response.readEntity(type));
         }
+        builder.append("\n");
         LOGGER.info(builder.toString());
     }
 }

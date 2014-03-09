@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Integrating Bean Validation with JAX-RS in Java EE 7</title>
+    <title>Validating JAX-RS resource data with Bean Validation in Java EE 7</title>
     <!-- CSS -->
     <style>
         section {
@@ -15,7 +15,7 @@
 </head>
 <body>
     <header>
-        <h1>Integrating Bean Validation with JAX-RS in Java EE 7</h1>
+        <h1>Validating JAX-RS resource data with Bean Validation in Java EE 7</h1>
     </header>
     <main>
         <section>

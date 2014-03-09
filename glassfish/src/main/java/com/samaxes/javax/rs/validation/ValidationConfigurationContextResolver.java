@@ -43,7 +43,7 @@ import org.glassfish.jersey.server.validation.ValidationConfig;
 public class ValidationConfigurationContextResolver implements ContextResolver<ValidationConfig> {
 
     /**
-     * Get a context of type {@code ValidationConfiguration} that is applicable to the supplied type.
+     * Get a context of type {@code ValidationConfig} that is applicable to the supplied type.
      *
      * @param type the class of object for which a context is desired
      * @return a context for the supplied type or {@code null} if a context for the supplied type is not available from

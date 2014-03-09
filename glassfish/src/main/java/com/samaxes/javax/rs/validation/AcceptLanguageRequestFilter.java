@@ -42,6 +42,8 @@ public class AcceptLanguageRequestFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        LocaleThreadLocal.set(headers.getAcceptableLanguages().get(0));
+        if (!headers.getAcceptableLanguages().isEmpty()) {
+            LocaleThreadLocal.set(headers.getAcceptableLanguages().get(0));
+        }
     }
 }

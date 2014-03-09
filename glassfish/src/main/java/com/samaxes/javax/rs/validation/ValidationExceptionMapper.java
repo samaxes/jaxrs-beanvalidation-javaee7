@@ -42,6 +42,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Variant;
 import javax.ws.rs.ext.ExceptionMapper;
 
+import org.glassfish.jersey.server.validation.ValidationError;
+import org.glassfish.jersey.server.validation.internal.LocalizationMessages;
+
 /**
  * {@link ExceptionMapper} for {@link ValidationException}.
  * <p>
@@ -49,6 +52,9 @@ import javax.ws.rs.ext.ExceptionMapper;
  * Supported media types are: {@code application/json} / {@code application/xml} (if appropriate provider is registered
  * on server).
  * </p>
+ * 
+ * @see org.glassfish.jersey.server.validation.internal.ValidationExceptionMapper The original Glassfish class:
+ *      {@code org.glassfish.jersey.server.validation.internal.ValidationExceptionMapper}
  */
 @javax.ws.rs.ext.Provider
 public class ValidationExceptionMapper implements ExceptionMapper<ValidationException> {
@@ -64,16 +70,24 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
     @Override
     public Response toResponse(final ValidationException exception) {
         if (exception instanceof ConstraintViolationException) {
-            LOGGER.log(Level.FINER, "Following ConstraintViolations has been encountered.", exception);
+            LOGGER.log(Level.FINER, LocalizationMessages.CONSTRAINT_VIOLATIONS_ENCOUNTERED(), exception);
+
             final ConstraintViolationException cve = (ConstraintViolationException) exception;
             final Response.ResponseBuilder response = Response.status(getStatus(cve));
 
             // Entity
-            final List<Variant> variants = Variant.mediaTypes(MediaType.APPLICATION_XML_TYPE,
+            final List<Variant> variants = Variant.mediaTypes(
+                    MediaType.APPLICATION_XML_TYPE,
                     MediaType.APPLICATION_JSON_TYPE).build();
             final Variant variant = request.get().selectVariant(variants);
             if (variant != null) {
                 response.type(variant.getMediaType());
+            } else {
+                /*
+                 * default media type which will be used only when none media type from {@value variants} is in
+                 * accept header of original request.
+                 */
+                response.type(MediaType.TEXT_PLAIN_TYPE);
             }
             response.entity(
                     new GenericEntity<List<ValidationError>>(
@@ -84,7 +98,7 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
 
             return response.build();
         } else {
-            LOGGER.log(Level.WARNING, "Unexpected Bean Validation problem.", exception);
+            LOGGER.log(Level.WARNING, LocalizationMessages.VALIDATION_EXCEPTION_RAISED(), exception);
 
             return Response.serverError().entity(exception.getMessage()).build();
         }
@@ -94,8 +108,8 @@ public class ValidationExceptionMapper implements ExceptionMapper<ValidationExce
         final List<ValidationError> errors = new ArrayList<ValidationError>();
 
         for (final ConstraintViolation<?> violation : violations) {
-            errors.add(new ValidationError(getInvalidValue(violation.getInvalidValue()), violation.getMessage(),
-                    violation.getMessageTemplate(), getPath(violation)));
+            errors.add(new ValidationError(violation.getMessage(), violation.getMessageTemplate(), getPath(violation),
+                    getInvalidValue(violation.getInvalidValue())));
         }
 
         return errors;

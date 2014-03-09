@@ -5,7 +5,7 @@
 
     <groupId>com.samaxes.javaee7</groupId>
     <artifactId>glassfish-jaxrs-validation</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>Validating JAX-RS resource data with Bean Validation in Java EE 7</name>
@@ -51,16 +51,8 @@
         <maven>3.0</maven>
     </prerequisites>
 
-    <repositories>
-        <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Repository Group</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <build>
-        <finalName>jaxrs-beanvalidation-glasshfish</finalName>
+        <finalName>jaxrs-beanvalidation-javaee7</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -96,7 +88,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.16</version>
+                <version>${surefire.version}</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
@@ -104,7 +96,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.16</version>
+                <version>${surefire.version}</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
@@ -176,18 +168,6 @@
             <version>4.0</version>
             <scope>provided</scope>
         </dependency>
-        <!--dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-jaxrs</artifactId>
-            <version>3.0.1.Final</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-validator-provider-11</artifactId>
-            <version>3.0.1.Final</version>
-            <scope>provided</scope>
-        </dependency-->
         <!-- Compile -->
     </dependencies>
 
@@ -196,5 +176,6 @@
         <project.build.resourceEncoding>ISO-8859-1</project.build.resourceEncoding>
         <maven.compiler.target>1.7</maven.compiler.target>
         <maven.compiler.source>1.7</maven.compiler.source>
+        <surefire.version>2.16</surefire.version>
     </properties>
 </project>
