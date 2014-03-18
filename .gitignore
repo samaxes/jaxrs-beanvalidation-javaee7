@@ -2,3 +2,7 @@ glassfish/target
 glassfish/.settings
 glassfish/.project
 glassfish/.classpath
+wildfly/target
+wildfly/.settings
+wildfly/.project
+wildfly/.classpath
