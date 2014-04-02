@@ -154,7 +154,7 @@
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.1.3.Final</version>
+                <version>1.1.4.Final</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -194,6 +194,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <!--
+                Failing to include this dependency provokes the exception: 
+                java.lang.RuntimeException: java.lang.ClassNotFoundException: org.glassfish.jersey.client.JerseyClientBuilder
+            -->
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-client</artifactId>
             <scope>test</scope>
@@ -234,7 +238,7 @@
         <project.build.resourceEncoding>ISO-8859-1</project.build.resourceEncoding>
         <maven.compiler.target>1.7</maven.compiler.target>
         <maven.compiler.source>1.7</maven.compiler.source>
-        <surefire.version>2.16</surefire.version>
+        <surefire.version>2.17</surefire.version>
         <wildfly.version>8.0.0.Final</wildfly.version>
         <wildfly.home>${project.build.directory}/wildfly-${wildfly.version}</wildfly.home>
     </properties>
