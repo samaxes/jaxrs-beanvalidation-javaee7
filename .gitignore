@@ -2,7 +2,11 @@ glassfish/target
 glassfish/.settings
 glassfish/.project
 glassfish/.classpath
+glassfish/.idea
+glassfish/glassfish-jaxrs-validation.iml
 wildfly/target
 wildfly/.settings
 wildfly/.project
 wildfly/.classpath
+wildfly/.idea
+wildfly/wildfly-jaxrs-validation.iml
